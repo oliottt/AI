@@ -1,0 +1,119 @@
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variáveis CSS para um tema minimalista (Azul + Cinza) */
+:root {
+    --cor-fundo-corpo: #f9f9f9;    /* Fundo geral muito claro */
+    --cor-fundo-card: #ffffff;    /* Fundo da caixa principal */
+    --cor-primaria: #007bff;      /* Azul Clean para destaque */
+    --cor-texto: #34495e;         /* Cinza Escuro para leitura */
+    --cor-detalhe: #ecf0f1;       /* Cinza muito claro para fundos secundários */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cor-fundo-corpo);
+    color: var(--cor-texto);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    background-color: var(--cor-fundo-card);
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra suave */
+    padding: 30px;
+    width: 100%;
+    max-width: 550px; 
+    text-align: center;
+}
+
+h1 {
+    color: var(--cor-primaria);
+    margin-bottom: 5px;
+    font-size: 1.8em;
+    font-weight: 400; /* Título leve */
+}
+
+p {
+    margin-bottom: 25px;
+    color: #7f8c8d;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+#userInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--cor-detalhe); 
+    border-radius: 4px;
+    font-size: 1em;
+    color: var(--cor-texto);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#userInput:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 1px var(--cor-primaria);
+    outline: none;
+}
+
+button {
+    padding: 10px 18px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #0056b3; 
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
+.resposta-area {
+    text-align: left;
+    padding: 15px;
+    background-color: var(--cor-detalhe); 
+    border-radius: 4px;
+    /* Linha de destaque minimalista */
+    border-left: 3px solid var(--cor-primaria);
+}
+
+.resposta-area h2 {
+    margin-top: 0;
+    color: var(--cor-texto);
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* Estilo para garantir que o texto em negrito (**) das respostas (como na matemática e receita) apareça bem */
+#respostaTexto {
+    color: #444;
+    line-height: 1.5;
+}
+
+#respostaTexto strong {
+    font-weight: 600; /* Um pouco mais de destaque */
+    color: var(--cor-texto);
+}

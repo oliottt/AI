@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Minimalista</title>
+    
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Assistente Minimalista</h1>
+        <p>Pergunte algo simples, Conhecimentos Gerais/Matematica</p>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Digite sua pergunta...">
+            <button onclick="enviarPergunta()">Perguntar</button>
+        </div>
+
+        <div class="resposta-area">
+            <h2>Resposta:</h2>
+            <p id="respostaTexto">Olá! Estou pronto para responder.</p>
+        </div>
+        <div id="author-corner">
+         Criado por Christofer
+    </div>
+    </div>
+
+    <script>
+  /**
+ * Função principal para processar a pergunta do usuário.
+ * Estrutura de prioridades: 1. Matemática -> 2. Interação -> 3. Conhecimento Específico -> 4. Resposta Padrão.
+ * * MELHORIA: A entrada do usuário agora é normalizada (sem acentos) 
+ * para aumentar a tolerância a erros de digitação e variações regionais.
+ * * NOVA FEATURE: Resposta sobre o dia atual.
+ */
+function enviarPergunta() {
+    // Acessa elementos da interface
+    const userInput = document.getElementById('userInput');
+    const respostaTexto = document.getElementById('respostaTexto');
+    
+    // Prepara as variáveis de input
+    const perguntaOriginal = userInput.value.trim();
+    let pergunta = userInput.value.toLowerCase().trim();
+    let resposta = "";
+
+    // Remove acentos e caracteres especiais para melhorar a correspondência (fuzziness)
+    pergunta = pergunta.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); 
+    
+    // 1. Lógica de Respostas de MATEMÁTICA (Prioridade Máxima)
+    const regexMatematica = /^(\s*[\d\s\+\-\*\/\(\)\.]+\s*)$/; 
+    if (regexMatematica.test(perguntaOriginal)) {
+        try {
+            const resultado = eval(perguntaOriginal);
+            resposta = `O resultado de ${perguntaOriginal} é **${resultado}**.`;
+        } catch (e) {
+            resposta = "Desculpe, a expressão matemática que você digitou é inválida. Tente algo como '5 * 8' ou '100 / 2'.";
+        }
+    } 
+    
+    // 2. Lógica de Respostas de DIA A DIA e Interação (Amplo)
+    else if (pergunta.includes('oi') || pergunta.includes('ola') || pergunta.includes('tudo bem') || pergunta.includes('e ai')) {
+        const saudacoes = [
+            "Olá! Tudo ótimo por aqui. Como posso ajudar você hoje?",
+            "Oi! Estou funcionando perfeitamente. Em que posso ser útil?",
+            "E aí! Já tem alguma pergunta pronta para mim?"
+        ];
+        resposta = saudacoes[Math.floor(Math.random() * saudacoes.length)];
+    }
+    else if (pergunta.includes('como') && (pergunta.includes('voce') || pergunta.includes('esta') || pergunta.includes('ta'))) {
+        resposta = "Como sou um programa de computador, não tenho sentimentos, mas estou online e pronto para processar dados! Espero que o seu dia esteja sendo produtivo.";
+    }
+    else if (pergunta.includes('triste') || pergunta.includes('cansado') || pergunta.includes('chateado') || pergunta.includes('depre')) {
+        resposta = "Sinto muito que você não esteja se sentindo bem. Lembre-se de fazer uma pausa, respirar fundo e beber água. Se precisar de algo, estarei aqui.";
+    }
+    else if (pergunta.includes('fazendo') || pergunta.includes('planos') || pergunta.includes('ocupado')) {
+        resposta = "Neste exato momento, estou processando sua pergunta e esperando a próxima! Meus planos são continuar aprendendo e otimizar meu código.";
+    }
+    else if (pergunta.includes('clima') || pergunta.includes('tempo') || pergunta.includes('chover')) {
+        resposta = "Eu não tenho dados de clima em tempo real, mas espero que o tempo esteja bom onde você estiver! (Simulação).";
+    }
+    else if (pergunta.includes('obrigado') || pergunta.includes('valeu') || pergunta.includes('agradeco')) { 
+        resposta = "De nada! Fico feliz em ter ajudado. Se precisar de mais alguma coisa, é só chamar.";
+    }
+    
+    // --- NOVO BLOCO PARA PERGUNTAR O DIA ---
+    else if ((pergunta.includes('dia') || pergunta.includes('data')) && pergunta.includes('hoje')) {
+        const data = new Date();
+        // toLocaleDateString formata a data no padrão local (ex: segunda-feira, 27 de Outubro de 2025)
+        resposta = `Hoje é **${data.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}**.`;
+    }
+    // --- FIM DO NOVO BLOCO ---
+    
+    else if (pergunta.includes('horario') || pergunta.includes('horas') || pergunta.includes('que horas')) {
+        const data = new Date();
+        resposta = `Agora são ${data.toLocaleTimeString('pt-BR')}. (Informação baseada no seu navegador).`;
+    }
+    else if (pergunta.includes('quem') && pergunta.includes('voce')) {
+        resposta = "Eu sou um assistente de IA minimalista, feito com HTML, CSS e JavaScript para demonstração.";
+    } 
+    
+    // 3. Lógica de Respostas de CONHECIMENTO ESPECÍFICO 
+    // ... (Conhecimento Geral, sem alterações) ...
+    
+    // --- 3.1. Geografia e Histórico ---
+    else if (pergunta.includes('capital') || pergunta.includes('brasilia')) {
+        resposta = "A capital do Brasil é Brasília.";
+    }
+    else if (pergunta.includes('franca') || pergunta.includes('paris')) { 
+        resposta = "A capital da França é Paris.";
+    }
+    else if (pergunta.includes('maior') && pergunta.includes('montanha') || pergunta.includes('everest')) {
+        resposta = "A maior montanha do mundo é o Monte Everest.";
+    }
+    else if (pergunta.includes('muro') && pergunta.includes('china')) {
+        resposta = "A Grande Muralha da China é a maior estrutura já construída por humanos.";
+    }
+    else if (pergunta.includes('egito') || pergunta.includes('piramides')) { 
+        resposta = "As Pirâmides de Gizé no Egito são uma das Sete Maravilhas do Mundo Antigo.";
+    }
+
+    // --- 3.2. Ciência e Natureza ---
+    else if (pergunta.includes('oceano') || pergunta.includes('maior agua') || pergunta.includes('pacificco')) { 
+        resposta = "O maior oceano do mundo é o Pacífico.";
+    }
+    else if (pergunta.includes('ferve') || pergunta.includes('agua') || pergunta.includes('100 graus')) {
+        resposta = "Ao nível do mar, a água pura ferve a 100 graus Celsius.";
+    }
+    else if (pergunta.includes('plantas') || pergunta.includes('fotossintese')) {
+        resposta = "A fotossíntese é o processo pelo qual as plantas usam a luz do sol para sintetizar alimentos (glicose).";
+    }
+    else if (pergunta.includes('terra') || pergunta.includes('planeta') || pergunta.includes('gira')) {
+        resposta = "A Terra é o terceiro planeta a partir do Sol e leva cerca de 365,25 dias para completar uma órbita.";
+    }
+    else if (pergunta.includes('cores') || pergunta.includes('luz') || pergunta.includes('arco iris')) { 
+        resposta = "A luz branca, quando dispersa, revela o espectro de cores: vermelho, laranja, amarelo, verde, azul, anil e violeta.";
+    }
+
+    // --- 3.3. Tecnologia e Curiosidades ---
+    else if (pergunta.includes('lampada') || pergunta.includes('edison')) { 
+        resposta = "A lâmpada incandescente foi popularizada por Thomas Edison.";
+    }
+    else if (pergunta.includes('internet') || pergunta.includes('quem criou') || pergunta.includes('rede')) {
+        resposta = "A internet (ou ARPANET, seu predecessor) foi desenvolvida inicialmente por cientistas e engenheiros nos EUA.";
+    }
+    else if (pergunta.includes('linguagem') && (pergunta.includes('web') || pergunta.includes('navegador'))) {
+        resposta = "JavaScript é uma das principais linguagens usadas para tornar a Web interativa.";
+    }
+    else if (pergunta.includes('receita') || pergunta.includes('bolo') || pergunta.includes('culinaria')) {
+        resposta = `
+            **Receita Básica de Bolo:**
+            **Ingredientes:** 3 cenouras, 4 ovos, 2 xícaras de farinha, 2 xícaras de açúcar, 1 xícara de óleo, 1 colher de fermento.
+            **Modo de Preparo:** Bata líquidos, misture secos e asse a 180°C por 40 minutos.
+        `;
+    } 
+
+    // 4. Resposta Padrão (Fallback Simples)
+    else {
+        const frasesPadrao = [
+            "Que interessante! Deixe-me pensar um pouco sobre isso.",
+            "Entendi! Essa é uma ótima pergunta.",
+            "Certo, vamos ver o que temos aqui.",
+            "Minha resposta é a seguinte:"
+        ];
+        
+        const fraseInterativa = frasesPadrao[Math.floor(Math.random() * frasesPadrao.length)];
+
+        resposta = `${fraseInterativa} Desculpe, ainda não fui programado para responder sobre **"${perguntaOriginal}"**. Tente perguntar sobre **bolo**, **Everest** ou um **cálculo**!`;
+    }
+
+    // Exibe a resposta final, substituindo quebras de linha (\n) por <br>
+    respostaTexto.innerHTML = resposta.replace(/\n/g, '<br>'); 
+    userInput.value = ''; // Limpa o campo de entrada
+}
+
+    </script>
+</body>
+</html>
